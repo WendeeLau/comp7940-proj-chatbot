@@ -13,8 +13,10 @@ load_dotenv()
 redis_client = redis.Redis(
     host=os.getenv("REDIS_HOST", "redis"),
     port=int(os.getenv("REDIS_PORT", "6379")),
+    #password=os.getenv("REDIS_PASSWORD", "Comp7940_"),
     db=0,
-    decode_responses=True
+    decode_responses=True,
+    #socket_connect_timeout=5
 )
 
 # MongoDB used for session logs record
@@ -102,7 +104,7 @@ def save_message_to_redis(user_id, role, content):
     #Each save will refresh the expiration time
     # 🤔As long as the user continues to interact, the history record will not expire
     redis_client.expire(key, 3600)
-    redis_client.expire(get_last_active_key(eser_id), 3600)
+    redis_client.expire(get_last_active_key(user_id), 3600)
 
 #Long-term storage，used for long-term needs such as auditing and analysis balabala...
 def save_chatlog_mongo(user_id, custom_name, user_message, assistant_reply):
