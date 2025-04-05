@@ -3,7 +3,7 @@ services:
     name: chatbot
     runtime: docker
     # 必须关联代码库（用于自动构建）
-    repo: git@github.com:WendeeLau/comp7940-proj-chatbot.git
+    repo: https://github.com/WendeeLau/comp7940-proj-chatbot.git
     branch: main
     dockerContext: .
     dockerfilePath: Dockerfile
