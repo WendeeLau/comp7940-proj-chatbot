@@ -18,6 +18,15 @@ jobs:
         api-key: ${{ secrets.RENDER_API_KEY }}
         service-id: ${{ secrets.RENDER_SERVICE_ID }}
 
+    - name: Trigger Render Deploy
+      run: |
+        curl -X POST \
+        -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+        -H "Content-Type: application/json" \
+        -d '{"serviceId":"${{ secrets.RENDER_SERVICE_ID }}"}' \
+        https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys
+
+
     - name: Send Telegram Success
       if: success()
       uses: appleboy/telegram-action@v0.1.0
