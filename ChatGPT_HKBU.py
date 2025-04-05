@@ -160,7 +160,7 @@ def parse_recipe_data(data):
         ingredients = list({ing.strip().lower() for ing in ingredients if ing.strip()})
         ingredients_display = "、".join(ingredients[:5]) + (" more" if len(ingredients) > 5 else "")
         recipe_card = f"""🍴 {item.get('title', 'Mysterious Cuisine')}
-⏰ {item.get('readyInMinutes', '?')} min |  ingredients ：{ingredients_display}
+⏰ {item.get('readyInMinutes', '?')} min | 📋 ingredients ：{ingredients_display}
 🔗 {item.get('spoonacularSourceUrl', 'https://spoonacular.com')}"""
         recipes.append(recipe_card)
 
