@@ -1,0 +1,51 @@
+# render
+services:
+  - type: web
+    name: chatbot
+    runtime: docker
+    image: wendeelau/chatbotbackend:latest
+    plan: free
+    envVars:
+      - key: GPT_BASICURL
+        value: https://genai.hkbu.edu.hk/general/rest
+      - key: GPT_MODELNAME
+        value: gpt-4-o-mini
+      - key: GPT_APIVERSION
+        value: 2024-05-01-preview
+      - key: TLG_ACCESS_TOKEN
+        value: ${TG_BOT_TOKEN}
+      - key: GPT_ACCESS_TOKEN
+        value: ${GPT_API_KEY}
+      - key: MONGODB_URI
+        value: ${MONGO_DB_URI}
+      - key: SPOONACULAR_API_KEY
+        value: ${SPOONACULAR_KEY}
+      - key: REDIS_HOST
+        value: redis
+      - key: REDIS_PORT
+        value: 6379
+      - key: REDIS_PASSWORD
+        value: ${REDIS_PWD}
+    disk:
+      name: chatbot-data
+      mountPath: /data
+      sizeGB: 1
+    healthCheckPath: /healthcheck
+    serviceLinks:
+      - name: redis
+        type: redis
+
+  - type: redis
+    name: redis
+    plan: free
+    disk:
+      name: redis-data
+      mountPath: /data
+      sizeGB: 1 
+    envVars:
+      - key: REDIS_PASSWORD
+        value: ${REDIS_PWD}
+    dockerfile: |
+      FROM redis:alpine
+      COPY redis.conf /usr/local/etc/redis/redis.conf
+      CMD ["redis-server", "/usr/local/etc/redis/redis.conf"]
