@@ -44,8 +44,8 @@ services:
   - type: redis
     name: redis
     plan: free
-    # Redis 密码配置（Render 专用字段）
-    envVars:  # Render 最新版本允许 Redis 使用 envVars
-      - key: REDIS_PASSWORD
-        sync: false  # 安全提示：sync 设为 false，避免明文暴露
-        value: your_redis_password_here  # 占位值，实际值在 Dashboard 设置
+    # # Redis 密码配置（Render 专用字段）
+    # envVars:  # Render 最新版本允许 Redis 使用 envVars
+    #   - key: REDIS_PASSWORD
+    #     sync: false  # 安全提示：sync 设为 false，避免明文暴露
+    #     value: your_redis_password_here  # 占位值，实际值在 Dashboard 设置
