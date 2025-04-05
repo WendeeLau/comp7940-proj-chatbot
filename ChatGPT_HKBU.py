@@ -61,16 +61,18 @@ Only use {custom_name} in:
 3. Closing: Open-ended question or light CTA
    "Shall we explore Italian flavors next, or invent something new? 🤔"
 """
-
+#redis keys generate,list
 def get_history_key(user_id):
     return f"chat_history:{user_id}"
-
+#redis keys generate,string
 def get_last_active_key(user_id):
     return f"last_active:{user_id}"
 
+# Only check timeout when loading history,lazy mode hahahha
 def load_history_from_redis(user_id, custom_name):
     # Automatic cleanup logic
-    # Determine whether it has timed out
+    # Determine whether it has timed out,CONTEXT_TIMEOUT_MINUTES = 10
+    #GET Key
     last_active = redis_client.get(get_last_active_key(user_id))
     if last_active:
         last_time = datetime.fromisoformat(last_active).replace(tzinfo=timezone.utc)
@@ -78,24 +80,31 @@ def load_history_from_redis(user_id, custom_name):
             # Clear the context
             redis_client.delete(get_history_key(user_id))
     else:
-        # initial timestamp
+        # initial timestamp(new user)
         redis_client.set(get_last_active_key(user_id), datetime.now(timezone.utc).isoformat())
 
     # loading history context
     key = get_history_key(user_id)
+    #LRANGE for list type
     history = redis_client.lrange(key, 0, -1)
     messages = [json.loads(msg) for msg in history]
     return [{"role": "system", "content": get_system_prompt(custom_name)}] + messages
 
 def save_message_to_redis(user_id, role, content):
     key = get_history_key(user_id)
+    #Add the new message to the end of the list(json format)
     redis_client.rpush(key, json.dumps({"role": role, "content": content}))
+    #Keep last MAX_HISTORY_LENGTH=10 records
     redis_client.ltrim(key, -MAX_HISTORY_LENGTH, -1)
+    #Each save updates the last activity time to the current UTC time
     redis_client.set(get_last_active_key(user_id), datetime.now(timezone.utc).isoformat())
     # Automatic expiration policy: 1 hour
+    #Each save will refresh the expiration time
+    # 🤔As long as the user continues to interact, the history record will not expire
     redis_client.expire(key, 3600)
-    redis_client.expire(get_last_active_key(user_id), 3600)
+    redis_client.expire(get_last_active_key(eser_id), 3600)
 
+#Long-term storage，used for long-term needs such as auditing and analysis balabala...
 def save_chatlog_mongo(user_id, custom_name, user_message, assistant_reply):
     chatlog_collection.insert_one({
         "user_id": user_id,
