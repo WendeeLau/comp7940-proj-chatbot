@@ -39,21 +39,21 @@ jobs:
           🕒 time: ${{ steps.deploy.outputs.deploy-time }}
           🔗 check: ${{ steps.deploy.outputs.deploy-url }}
 
-    - name: Send Email Success
-      if: success()
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: smtp.example.com
-        server_port: 587
-        username: ${{ secrets.EMAIL_USER }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: "✅ success - ${{ github.repository }}"
-        body: |
-          deploy successfully on Render
-          time: ${{ steps.deploy.outputs.deploy-time }}
-          details: ${{ steps.deploy.outputs.deploy-url }}
-        to: ${{ secrets.NOTIFICATION_EMAIL }}
-        from: "Deploy Bot <deploy@example.com>"
+    # - name: Send Email Success
+    #   if: success()
+    #   uses: dawidd6/action-send-mail@v3
+    #   with:
+    #     server_address: smtp.example.com
+    #     server_port: 587
+    #     username: ${{ secrets.EMAIL_USER }}
+    #     password: ${{ secrets.EMAIL_PASSWORD }}
+    #     subject: "✅ success - ${{ github.repository }}"
+    #     body: |
+    #       deploy successfully on Render
+    #       time: ${{ steps.deploy.outputs.deploy-time }}
+    #       details: ${{ steps.deploy.outputs.deploy-url }}
+    #     to: ${{ secrets.NOTIFICATION_EMAIL }}
+    #     from: "Deploy Bot <deploy@example.com>"
 
     - name: Send Telegram Failure
       if: failure()
@@ -66,18 +66,18 @@ jobs:
           ▶️ service: ${{ secrets.RENDER_SERVICE_NAME }}
           🔍 logs: ${{ steps.deploy.outputs.logs-url }}
 
-    - name: Send Email Failure
-      if: failure()
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: smtp.example.com
-        server_port: 587
-        username: ${{ secrets.EMAIL_USER }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: "❌ failed - ${{ github.repository }}"
-        body: |
-          deploy on Render failed！
-          submit: ${{ github.sha }}
-          logs: ${{ steps.deploy.outputs.logs-url }}
-        to: ${{ secrets.NOTIFICATION_EMAIL }}
-        from: "Deploy Bot <deploy@example.com>"
+    # - name: Send Email Failure
+    #   if: failure()
+    #   uses: dawidd6/action-send-mail@v3
+    #   with:
+    #     server_address: smtp.example.com
+    #     server_port: 587
+    #     username: ${{ secrets.EMAIL_USER }}
+    #     password: ${{ secrets.EMAIL_PASSWORD }}
+    #     subject: "❌ failed - ${{ github.repository }}"
+    #     body: |
+    #       deploy on Render failed！
+    #       submit: ${{ github.sha }}
+    #       logs: ${{ steps.deploy.outputs.logs-url }}
+    #     to: ${{ secrets.NOTIFICATION_EMAIL }}
+    #     from: "Deploy Bot <deploy@example.com>"
