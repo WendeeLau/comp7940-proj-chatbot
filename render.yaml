@@ -45,7 +45,7 @@ services:
     name: redis
     plan: free
     # Redis 密码配置（Render 专用字段）
-    password:
-      sync: false
-      value: your_redis_password_here  # 可选（Dashboard 中覆盖）
-    # 注意：Render Redis 不支持 disk 挂载（删除 disk 配置）
+    envVars:  # Render 最新版本允许 Redis 使用 envVars
+      - key: REDIS_PASSWORD
+        sync: false  # 安全提示：sync 设为 false，避免明文暴露
+        value: your_redis_password_here  # 占位值，实际值在 Dashboard 设置
