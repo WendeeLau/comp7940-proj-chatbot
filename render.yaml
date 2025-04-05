@@ -2,7 +2,11 @@ services:
   - type: web
     name: chatbot
     runtime: docker
-    image: wendeelau/chatbotbackend:latest
+    # 必须关联代码库（用于自动构建）
+    repo: git@github.com:WendeeLau/comp7940-proj-chatbot.git
+    branch: main
+    dockerContext: .
+    dockerfilePath: Dockerfile
     plan: free
     envVars:
       - key: GPT_BASICURL
@@ -11,38 +15,37 @@ services:
         value: gpt-4-o-mini
       - key: GPT_APIVERSION
         value: 2024-05-01-preview
+      # 敏感变量通过 Dashboard 设置（不要硬编码）
       - key: TLG_ACCESS_TOKEN
-        sync: false
-        value: your_telegram_token_here
+        sync: false  # 关闭同步，避免覆盖
+        value: placeholder  # 占位值（实际值在 Dashboard 设置）
       - key: GPT_ACCESS_TOKEN
         sync: false
-        value: your_openai_key_here
+        value: placeholder
       - key: MONGODB_URI
         sync: false
-        value: your_mongodb_uri_here
+        value: placeholder
       - key: SPOONACULAR_API_KEY
         sync: false
-        value: your_spoonacular_key_here
+        value: placeholder
+      # Redis 配置（使用 Render 的占位符）
       - key: REDIS_HOST
         value: ${services.redis.host}
       - key: REDIS_PORT
         value: ${services.redis.port}
       - key: REDIS_PASSWORD
-        sync: false
-        value: your_redis_password_here
+        value: ${services.redis.password}  # 如果 Redis 设置了密码
     disk:
       name: chatbot-data
       mountPath: /data
       sizeGB: 1
     healthCheckPath: /healthcheck
-    serviceLinks:
-      - type: redis
-        name: redis
 
   - type: redis
     name: redis
     plan: free
-    envVars:
-      - key: REDIS_PASSWORD
-        sync: false
-        value: your_redis_password_here
+    # Redis 密码配置（Render 专用字段）
+    password:
+      sync: false
+      value: your_redis_password_here  # 可选（Dashboard 中覆盖）
+    # 注意：Render Redis 不支持 disk 挂载（删除 disk 配置）
