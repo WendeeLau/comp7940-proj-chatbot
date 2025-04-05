@@ -13,7 +13,7 @@ jobs:
 
     - name: Deploy to Render
       id: deploy
-      uses: render-oss/actions-deploy-render@v2.0.0
+      uses: render-oss/deploy-render@v1
       with:
         api-key: ${{ secrets.RENDER_API_KEY }}
         service-id: ${{ secrets.RENDER_SERVICE_ID }}
