@@ -141,7 +141,7 @@ def submit(custom_name, message_text, user_id):
         return assistant_reply
     except Exception as e:
         logging.error(f"ChatGPT API Error: {str(e)}")
-        return "🍳🫨Oops! Kitchen chaos... please wait a moment."
+        return "🫨Oops! Kitchen chaos... please wait a moment."
 
 # Recipe API :SPOONACULAR
 SPOONACULAR_API_KEY = os.getenv("SPOONACULAR_API_KEY")
