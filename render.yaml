@@ -2,8 +2,7 @@ services:
   - type: web
     name: chatbot
     runtime: docker
-    # 必须关联代码库（用于自动构建）
-    repo: https://github.com/WendeeLau/comp7940-proj-chatbot.git
+    repo: https://github.com/WendeeLau/comp7940-proj-chatbot
     branch: main
     dockerContext: .
     dockerfilePath: Dockerfile
@@ -15,37 +14,32 @@ services:
         value: gpt-4-o-mini
       - key: GPT_APIVERSION
         value: 2024-05-01-preview
-      # 敏感变量通过 Dashboard 设置（不要硬编码）
+      # 敏感变量通过 Dashboard 设置（sync: false 表示不硬编码）
       - key: TLG_ACCESS_TOKEN
-        sync: false  # 关闭同步，避免覆盖
-        value: placeholder  # 占位值（实际值在 Dashboard 设置）
+        sync: false
       - key: GPT_ACCESS_TOKEN
         sync: false
-        value: placeholder
       - key: MONGODB_URI
         sync: false
-        value: placeholder
       - key: SPOONACULAR_API_KEY
         sync: false
-        value: placeholder
-      # Redis 配置（使用 Render 的占位符）
+      # Redis 连接信息（Render 自动注入服务属性）
       - key: REDIS_HOST
-        value: ${services.redis.host}
+        fromService:
+          type: redis
+          name: redis
+          property: host
       - key: REDIS_PORT
-        value: ${services.redis.port}
-      - key: REDIS_PASSWORD
-        value: ${services.redis.password}  # 如果 Redis 设置了密码
-    disk:
-      name: chatbot-data
-      mountPath: /data
-      sizeGB: 1
+        fromService:
+          type: redis
+          name: redis
+          property: port
     healthCheckPath: /healthcheck
 
   - type: redis
     name: redis
     plan: free
-    # # Redis 密码配置（Render 专用字段）
-    # envVars:  # Render 最新版本允许 Redis 使用 envVars
-    #   - key: REDIS_PASSWORD
-    #     sync: false  # 安全提示：sync 设为 false，避免明文暴露
-    #     value: your_redis_password_here  # 占位值，实际值在 Dashboard 设置
+    ipAllowList: # Required
+      - source: 0.0.0.0/0
+        description: everywhere
+    maxmemoryPolicy: allkeys-lru
