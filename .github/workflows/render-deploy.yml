@@ -11,12 +11,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Deploy to Render
-      id: deploy
-      uses: render-oss/deploy-render@v1
-      with:
-        api-key: ${{ secrets.RENDER_API_KEY }}
-        service-id: ${{ secrets.RENDER_SERVICE_ID }}
+    # - name: Deploy to Render
+    #   id: deploy
+    #   uses: render-oss/deploy-render@v1
+    #   with:
+    #     api-key: ${{ secrets.RENDER_API_KEY }}
+    #     service-id: ${{ secrets.RENDER_SERVICE_ID }}
 
     - name: Trigger Render Deploy
       run: |
