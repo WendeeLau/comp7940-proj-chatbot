@@ -14,7 +14,7 @@ services:
         value: gpt-4-o-mini
       - key: GPT_APIVERSION
         value: 2024-05-01-preview
-      # 敏感变量通过 Dashboard 设置（sync: false 表示不硬编码）
+      # secret
       - key: TLG_ACCESS_TOKEN
         sync: false
       - key: GPT_ACCESS_TOKEN
@@ -23,7 +23,7 @@ services:
         sync: false
       - key: SPOONACULAR_API_KEY
         sync: false
-      # Redis 连接信息（Render 自动注入服务属性）
+      # Redis conn info
       - key: REDIS_HOST
         fromService:
           type: redis
@@ -34,7 +34,7 @@ services:
           type: redis
           name: redis
           property: port
-    healthCheckPath: /healthcheck
+    #healthCheckPath: /healthcheck
 
   - type: redis
     name: redis
