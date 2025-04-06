@@ -6,7 +6,7 @@ services:
     branch: main
     dockerContext: .
     dockerfilePath: Dockerfile
-    plan: free
+    plan: starter
     envVars:
       - key: GPT_BASICURL
         value: https://genai.hkbu.edu.hk/general/rest
