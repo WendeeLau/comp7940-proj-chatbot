@@ -1,6 +1,6 @@
 services:
-  - type: web
-    name: chatbot
+  - type: worker
+    name: chatbot_backend
     runtime: docker
     repo: https://github.com/WendeeLau/comp7940-proj-chatbot
     branch: main
