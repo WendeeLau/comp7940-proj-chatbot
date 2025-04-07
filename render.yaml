@@ -1,10 +1,10 @@
 services:
-  - type: web
+  - type: worker
     name: Chatbot_YumBuddy_comp7940
     region: singapore
     runtime: image
     image: 
-      url: docker.io/wendeelau/trytrytry:v222
+      url: docker.io/wendeelau/chatbot-yumbuddy-com7940:v1.6
     #repo: https://github.com/WendeeLau/comp7940-proj-chatbot
     #branch: main
     #dockerContext: .
