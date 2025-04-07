@@ -28,18 +28,25 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/your-repo-name:${{ github.sha }}
 
       # Render deploy
-      - name: Trigger Render Deployment
+      - name: Deploy on render
+        # Only run this step if the branch is main
+        if: github.ref == 'refs/heads/main'
+        env:
+          deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
-          DEPLOY_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
-            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-            -H "Content-Type: application/json" \
-            -d '{"serviceId":"${{ secrets.RENDER_SERVICE_ID }}"}' \
-            "https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys")
+          curl "$deploy_url"
+      # - name: Trigger Render Deployment
+      #   run: |
+      #     DEPLOY_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+      #       -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+      #       -H "Content-Type: application/json" \
+      #       -d '{"serviceId":"${{ secrets.RENDER_SERVICE_ID }}"}' \
+      #       "https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys")
           
-          if [ "$DEPLOY_RESPONSE" -ne 201 ]; then
-            echo "::error::Render deployment failed with status code: $DEPLOY_RESPONSE"
-            exit 1
-          fi
+      #     if [ "$DEPLOY_RESPONSE" -ne 201 ]; then
+      #       echo "::error::Render deployment failed with status code: $DEPLOY_RESPONSE"
+      #       exit 1
+      #     fi
 
       # Telegram notice
       - name: Send Telegram Notification
