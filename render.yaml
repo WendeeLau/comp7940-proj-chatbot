@@ -1,12 +1,15 @@
 services:
-  - type: worker
-    name: chatbot_backend
-    runtime: docker
-    repo: https://github.com/WendeeLau/comp7940-proj-chatbot
-    branch: main
-    dockerContext: .
-    dockerfilePath: Dockerfile
-    plan: starter
+  - type: web
+    name: Chatbot_YumBuddy_comp7940
+    region: singapore
+    runtime: image
+    image: 
+      url: docker.io/wendeelau/comp7940-chatbotbackend:v1.3
+    #repo: https://github.com/WendeeLau/comp7940-proj-chatbot
+    #branch: main
+    #dockerContext: .
+    #dockerfilePath: Dockerfile
+    plan: free
     envVars:
       - key: GPT_BASICURL
         value: https://genai.hkbu.edu.hk/general/rest
@@ -27,19 +30,20 @@ services:
       - key: REDIS_HOST
         fromService:
           type: redis
-          name: redis
+          name: redis-chatbot
           property: host
       - key: REDIS_PORT
         fromService:
           type: redis
-          name: redis
+          name: redis-chatbot
           property: port
-    #healthCheckPath: /healthcheck
+    healthCheckPath: /healthcheck
 
   - type: redis
-    name: redis
+    name: redis-chatbot
+    region: singapore
     plan: free
     ipAllowList: # Required
       - source: 0.0.0.0/0
-        description: everywhere
+        description: all IP
     maxmemoryPolicy: allkeys-lru
