@@ -2,13 +2,14 @@ services:
   - type: worker
     name: Chatbot_YumBuddy_comp7940
     #region: singapore
-    runtime: image
-    image: 
-      url: docker.io/wendeelau/chatbot-yumbuddy-com7940:v1.6
-    #repo: https://github.com/WendeeLau/comp7940-proj-chatbot
-    #branch: main
-    #dockerContext: .
-    #dockerfilePath: Dockerfile
+    #runtime: image
+    runtime: docker
+    #image: 
+    #  url: docker.io/wendeelau/chatbot-yumbuddy-com7940:v1.6
+    repo: https://github.com/WendeeLau/comp7940-proj-chatbot
+    branch: main
+    dockerContext: .
+    dockerfilePath: Dockerfile
     plan: starter
     envVars:
       - key: GPT_BASICURL
