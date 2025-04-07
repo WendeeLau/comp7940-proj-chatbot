@@ -37,7 +37,7 @@ services:
           type: redis
           name: redis-chatbot
           property: port
-    healthCheckPath: /
+    healthCheckPath: /healthcheck
 
   - type: redis
     name: redis-chatbot
