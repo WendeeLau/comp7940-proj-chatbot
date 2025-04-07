@@ -4,12 +4,12 @@ services:
     region: singapore
     runtime: image
     image: 
-      url: docker.io/wendeelau/comp7940-chatbotbackend:v1.3
+      url: docker.io/wendeelau/comp7940-chatbotbackend:v1.3.1
     #repo: https://github.com/WendeeLau/comp7940-proj-chatbot
     #branch: main
     #dockerContext: .
     #dockerfilePath: Dockerfile
-    plan: free
+    plan: starter
     envVars:
       - key: GPT_BASICURL
         value: https://genai.hkbu.edu.hk/general/rest
