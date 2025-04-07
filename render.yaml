@@ -1,7 +1,7 @@
 services:
   - type: worker
     name: Chatbot_YumBuddy_comp7940
-    region: singapore
+    #region: singapore
     runtime: image
     image: 
       url: docker.io/wendeelau/chatbot-yumbuddy-com7940:v1.6
@@ -41,7 +41,7 @@ services:
 
   - type: redis
     name: redis-chatbot
-    region: singapore
+    #region: singapore
     plan: free
     ipAllowList: # Required
       - source: 0.0.0.0/0
