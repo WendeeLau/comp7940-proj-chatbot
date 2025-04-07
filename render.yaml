@@ -4,7 +4,7 @@ services:
     region: singapore
     runtime: image
     image: 
-      url: docker.io/wendeelau/chatbot333:v3
+      url: docker.io/wendeelau/chatbothealth:v111
     #repo: https://github.com/WendeeLau/comp7940-proj-chatbot
     #branch: main
     #dockerContext: .
