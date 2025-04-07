@@ -25,7 +25,7 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/comp7940-chatbot-yumbuddy:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/your-repo-name:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/comp7940-chatbot-yumbuddy:${{ github.sha }}
 
       # Render deploy
       - name: Deploy on render
