@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  chatbot:
+    image: wendeelau/comp7940-chatbot-yumbuddy:v  # check the tag on my docker hub
+    #from your own env
+    environment:
+      - TLG_ACCESS_TOKEN=${TLG_ACCESS_TOKEN}          
+      - GPT_BASICURL=${GPT_BASICURL}                  
+      - GPT_MODELNAME=${GPT_MODELNAME}
+      - GPT_APIVERSION=${GPT_APIVERSION}
+      - GPT_ACCESS_TOKEN=${GPT_ACCESS_TOKEN}
+      - MONGODB_URI=${MONGODB_URI}                    
+      - SPOONACULAR_API_KEY=${SPOONACULAR_API_KEY}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}              
+      - REDIS_HOST=redis                              
+      - REDIS_PORT=6379                               
+    ports:
+      - "80:8000"                                    
+    depends_on:
+      - redis
+
+  redis:
+    image: redis
+    restart: always
+    command: redis-server --requirepass $${REDIS_PASSWORD}  
+    volumes:
+      - redis_data:/data
+    
+
+volumes:
+  redis_data:
